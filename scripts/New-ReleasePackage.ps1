@@ -39,7 +39,7 @@ if (Test-Path -LiteralPath $zipPath) {
 
 New-Item -ItemType Directory -Path $packageRoot -Force | Out-Null
 
-foreach ($path in @('Launch-GlauthUserManager.ps1', 'Run-GlauthUserManager.cmd', 'README.md', 'VERSION')) {
+foreach ($path in @('Launch-GlauthUserManager.ps1', 'Run-GlauthUserManager.cmd', 'README.md', 'VERSION', 'THIRD-PARTY-NOTICES.txt')) {
     Copy-Item -LiteralPath (Join-Path -Path $projectRoot -ChildPath $path) -Destination $packageRoot -Force
 }
 

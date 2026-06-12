@@ -50,3 +50,4 @@ git push origin v0.0.1
 - Advanced nested blocks already present under a user or group, such as capabilities blocks, are carried through when saving.
 - Generated `passbcrypt` values are hex-encoded from the full bcrypt string and use cost `10`, matching the usual `htpasswd -bnBC 10 ... | xxd -p` workflow.
 - The resulting decoded bcrypt prefix is `$2a$10$`, which matches GLAuth's own sample hashes even though some docs/comments refer to `$2y$`.
+- Third-party license notices for bundled dependencies are included in `THIRD-PARTY-NOTICES.txt`.
