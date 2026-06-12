@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Read version
+        id: version
+        shell: pwsh
+        run: |
+          $version = (Get-Content -LiteralPath .\VERSION -Raw).Trim()
+          if (-not $version) {
+            throw 'VERSION file is empty.'
+          }
+
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $tagVersion = $env:GITHUB_REF_NAME.TrimStart('v')
+            if ($tagVersion -ne $version) {
+              throw "Tag version '$tagVersion' does not match VERSION '$version'."
+            }
+          }
+
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "tag=v$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build release package
+        id: package
+        shell: pwsh
+        run: |
+          $result = .\scripts\New-ReleasePackage.ps1 -Version '${{ steps.version.outputs.version }}'
+          "zip_path=$($result.ZipPath)" >> $env:GITHUB_OUTPUT
+
+      - name: Upload packaged artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: glauth-user-manager-v${{ steps.version.outputs.version }}
+          path: ${{ steps.package.outputs.zip_path }}
+
+      - name: Create GitHub release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: v${{ steps.version.outputs.version }}
+          files: ${{ steps.package.outputs.zip_path }}

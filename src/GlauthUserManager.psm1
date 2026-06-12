@@ -1,5 +1,15 @@
 Set-StrictMode -Version Latest
 
+function Get-GlauthUserManagerVersion {
+    $moduleRoot = Split-Path -Path $PSScriptRoot -Parent
+    $versionFile = Join-Path -Path $moduleRoot -ChildPath 'VERSION'
+    if (-not (Test-Path -LiteralPath $versionFile)) {
+        return '0.0.0'
+    }
+
+    return (Get-Content -LiteralPath $versionFile -Raw).Trim()
+}
+
 function New-GlauthUserRecord {
     param(
         [string]$Name = '',
@@ -889,6 +899,7 @@ function Show-GlauthUserManagerWindow {
     $stringReader = New-Object System.IO.StringReader($xamlContent)
     $xmlReader = [System.Xml.XmlReader]::Create($stringReader)
     $window = [Windows.Markup.XamlReader]::Load($xmlReader)
+    $window.Title = 'GLAuth User Manager v{0}' -f (Get-GlauthUserManagerVersion)
 
     $controls = @{}
     foreach ($name in @(

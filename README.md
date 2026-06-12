@@ -2,6 +2,8 @@
 
  PowerShell + WPF desktop app for editing `[[users]]` and `[[groups]]` in a GLAuth file-backed config, with ConfigMap load/save support for Kubernetes.
 
+Current version: **0.0.1**
+
 ![GLAuth User Manager screenshot](docs/images/screenshot-1.png)
 
 ## Features
@@ -22,6 +24,15 @@ pwsh -ExecutionPolicy Bypass -File .\Launch-GlauthUserManager.ps1
 ```
 
 PowerShell 7+ is required.
+
+## Release
+
+Push a tag matching the `VERSION` file to create a GitHub release package with Actions.
+
+```powershell
+git tag v0.0.1
+git push origin v0.0.1
+```
 
 ## Kubernetes workflow
 
