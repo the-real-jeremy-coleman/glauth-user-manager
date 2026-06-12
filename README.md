@@ -2,6 +2,8 @@
 
  PowerShell + WPF desktop app for editing `[[users]]` and `[[groups]]` in a GLAuth file-backed config, with ConfigMap load/save support for Kubernetes.
 
+![GLAuth User Manager screenshot](docs/images/screenshot-1.png)
+
 ## Features
 
 - Load GLAuth config from a local file or from `kubectl get configmap`
